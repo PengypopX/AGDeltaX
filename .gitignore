@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+env/
+
+# ROS2 build artifacts
+build/
+install/
+log/
+
+# VSCode
+.vscode/
+*.db
+
+# Large binaries
+*.so
+*.bin
+*.dat
+*.zip
+*.tar.gz
