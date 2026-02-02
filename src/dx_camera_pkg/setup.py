@@ -1,13 +1,13 @@
-from setuptools import find_packages, setup
+from setuptools import setup
 import os
 from glob import glob
 
-package_name = 'robot_sensor_pkg'
+package_name = 'dx_camera_pkg'
 
 setup(
     name=package_name,
     version='0.0.0',
-    packages=find_packages(include=[package_name]),
+    packages=[package_name],  # simpler than find_packages if you only have one top-level folder
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
@@ -19,13 +19,11 @@ setup(
     zip_safe=True,
     maintainer='fresnostate',
     maintainer_email='fresnostate@todo.todo',
-    description='Robot sensor package for ROS 2',
+    description='Camera package for ROS 2',
     license='Apache License 2.0',
     entry_points={
         'console_scripts': [
-            "robot_sensor = robot_sensor_pkg.connection:main",
-            "dxon = robot_sensor_pkg.dxon:main",
-            "dxon_client_test = robot_sensor_pkg.dxon_client_test:main"
+            # e.g. 'camera_node = dx_camera_pkg.camera_node:main'
         ],
     },
 )

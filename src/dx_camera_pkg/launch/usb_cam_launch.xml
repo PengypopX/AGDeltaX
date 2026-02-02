@@ -1,0 +1,16 @@
+<launch>
+  <!-- Start the USB camera node -->
+  <node pkg="usb_cam" exec="usb_cam_node" name="usb_cam" output="screen">
+    <!-- Point to your calibration YAML -->
+    <param name="camera_info_url"
+       value="file://$(find-pkg-share camera_sensors)/config/camera_calibration.yaml"/>
+
+    
+    <!-- Example extra parameters -->
+    <param name="video_device" value="/dev/video2"/>
+    <param name="image_width" value="1920"/>
+    <param name="image_height" value="1080"/>
+    <param name="pixel_format" value="yuyv"/>
+    <param name="camera_frame_id" value="camera"/>
+  </node>
+</launch>
