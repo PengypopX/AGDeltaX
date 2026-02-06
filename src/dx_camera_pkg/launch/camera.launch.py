@@ -14,16 +14,16 @@ def generate_launch_description():
             executable='usb_cam_node_exe',   # ROS 2 executable name for usb_cam
             name='usb_cam',
             output='screen',
+            remappings=[],
             parameters=[{
                 'camera_name': 'usb_cam',
                 'camera_info_url': f'file://{calibration_file}',
                 'video_device': '/dev/video0',
-                'image_width': 1280,
-                'image_height': 720,
-                'framerate': 30.0,
+                'image_width': 3840,
+                'image_height': 2160,
+                'framerate': 15.0,
                 'pixel_format': 'mjpeg2rgb',
-                'camera_frame_id': 'camera'
+                'camera_frame_id': 'camera_link'
             }]
-
         )
     ])
