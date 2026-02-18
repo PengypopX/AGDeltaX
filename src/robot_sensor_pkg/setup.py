@@ -7,7 +7,7 @@ package_name = 'robot_sensor_pkg'
 setup(
     name=package_name,
     version='0.0.0',
-    packages=find_packages(include=[package_name]),
+    packages=find_packages(include=['robot_sensor_pkg', 'deltax']),
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
@@ -25,7 +25,8 @@ setup(
         'console_scripts': [
             "robot_sensor = robot_sensor_pkg.connection:main",
             "dxon = robot_sensor_pkg.dxon:main",
-            "dxon_client_test = robot_sensor_pkg.dxon_client_test:main"
+            "dxon_client_test = robot_sensor_pkg.dxon_client_test:main",
+            "drive_motor = robot_sensor_pkg.drive_motor:main"
         ],
     },
 )

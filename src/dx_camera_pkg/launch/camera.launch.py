@@ -19,8 +19,8 @@ def generate_launch_description():
                 'camera_name': 'usb_cam',
                 'camera_info_url': f'file://{calibration_file}',
                 'video_device': '/dev/video0',
-                'image_width': 3840,
-                'image_height': 2160,
+                'image_width': 1280,
+                'image_height': 960,
                 'framerate': 15.0,
                 'pixel_format': 'mjpeg2rgb',
                 'camera_frame_id': 'camera_link'

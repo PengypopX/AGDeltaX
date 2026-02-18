@@ -16,10 +16,10 @@ CharucoDetectorNode::CharucoDetectorNode()
     tf_broadcaster_ = std::make_shared<tf2_ros::TransformBroadcaster>(this);
 
     // --- Charuco board setup (dummy measurements) ---
-    int squares_x = 8;          // number of squares in X direction
-    int squares_y = 11;         // number of squares in Y direction
-    float square_length = 0.021f; // meters (21 mm)
-    float marker_length = 0.016f; // meters (16 mm)
+    int squares_x = 11;          // number of squares in X direction
+    int squares_y = 8;         // number of squares in Y direction
+    float square_length = 0.020f; // meters (20 mm)
+    float marker_length = 0.015f; // meters (14 mm)
 
     charuco_board_ = cv::aruco::CharucoBoard::create(
         squares_x, squares_y, square_length, marker_length, dictionary_
@@ -82,6 +82,8 @@ void CharucoDetectorNode::imageCallback(const sensor_msgs::msg::Image::ConstShar
     );
 
     if (charuco_ids.total() < 4) return;
+
+    RCLCPP_INFO(this->get_logger(), "Detected %lu charuco corners", charuco_ids.total());
 
     cv::Vec3d rvec, tvec;
     bool valid = cv::aruco::estimatePoseCharucoBoard(
