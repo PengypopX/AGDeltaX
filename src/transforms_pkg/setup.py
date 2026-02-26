@@ -1,5 +1,6 @@
 from setuptools import find_packages, setup
-
+import os 
+from glob import glob
 package_name = 'transforms_pkg'
 
 setup(
@@ -10,6 +11,7 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        (os.path.join('share', package_name, 'launch'), glob('launch/*.launch.py')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -24,7 +26,10 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'yolo_subscriber = transforms_pkg.ros_transformer:main'
+            'yolo_subscriber = transforms_pkg.ros_transformer:main',
+            'extrinsics_collector = transforms_pkg.extrinsics_collector:main',
+            'yolo_pixel_to_mm = transforms_pkg.yolo_pixel_to_mm:main',
+            'invert_yaml = transforms_pkg.invert_yaml:main'
         ],
     },
 )

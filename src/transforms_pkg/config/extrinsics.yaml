@@ -1,0 +1,15 @@
+camera_frame: camera_frame
+charuco_frame: charuco_board
+translation:
+  x: 0.03954905148256105
+  y: 0.008441580167614671
+  z: 0.44722536746335273
+rotation:
+  x: 0.9788210498639588
+  y: -0.0002652422222909105
+  z: -0.037008126871050324
+  w: 0.20134468092124344
+euler_degrees:
+  roll: 168.84
+  pitch: -4.24
+  yaw: -4.31

@@ -2,12 +2,12 @@ from setuptools import find_packages, setup
 import os
 from glob import glob
 
-package_name = 'robot_sensor_pkg'
+package_name = 'deltax_main_pkg'
 
 setup(
     name=package_name,
     version='0.0.0',
-    packages=find_packages(include=['robot_sensor_pkg', 'deltax']),
+    packages=find_packages(include=['deltax_main_pkg', 'deltax']),
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
@@ -19,15 +19,12 @@ setup(
     zip_safe=True,
     maintainer='fresnostate',
     maintainer_email='fresnostate@todo.todo',
-    description='Robot sensor package for ROS 2',
+    description='deltax ros intermediate',
     license='Apache License 2.0',
     entry_points={
         'console_scripts': [
-            "robot_sensor = robot_sensor_pkg.connection:main",
-            "dxon = robot_sensor_pkg.dxon:main",
-            "dxon_client_test = robot_sensor_pkg.dxon_client_test:main",
-            "drive_motor = robot_sensor_pkg.drive_motor:main",
-            "drive_motor_v2 = robot_sensor_pkg.drive_motor_v2:main"
+            "send_ts = deltax_main_pkg.send_ts:main",
+            "robot_poll = deltax_main_pkg.robot_poll:main"
         ],
     },
 )

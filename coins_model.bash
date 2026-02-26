@@ -11,4 +11,3 @@ input_image_topic:="/image_raw" \
 use_3d:=False \
 use_debug:=True \
 device:=cpu
-
