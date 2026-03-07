@@ -29,7 +29,9 @@ setup(
             'yolo_subscriber = transforms_pkg.ros_transformer:main',
             'extrinsics_collector = transforms_pkg.extrinsics_collector:main',
             'yolo_pixel_to_mm = transforms_pkg.yolo_pixel_to_mm:main',
-            'invert_yaml = transforms_pkg.invert_yaml:main'
+            'yolo_pixel_to_mm_v2 = transforms_pkg.yolo_pixel_to_mm_v2:main',
+            'invert_yaml = transforms_pkg.invert_yaml:main',
+            'homography_generator = transforms_pkg.homography_generator:main'
         ],
     },
 )

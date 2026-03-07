@@ -1,55 +1,26 @@
-camera_matrix:
-  cols: 3
-  data:
-  - 900.0
-  - 0.0
-  - 640.0
-  - 0.0
-  - 900.0
-  - 480.0
-  - 0.0
-  - 0.0
-  - 1.0
-  rows: 3
-camera_name: usb_cam
-distortion_coefficients:
-  cols: 5
-  data:
-  - 0.0
-  - 0.0
-  - 0.0
-  - 0.0
-  - 0.0
-  rows: 1
-distortion_model: plumb_bob
-image_height: 960
 image_width: 1280
-projection_matrix:
-  cols: 4
-  data:
-  - 900.0
-  - 0.0
-  - 640.0
-  - 0.0
-  - 0.0
-  - 900.0
-  - 480.0
-  - 0.0
-  - 0.0
-  - 0.0
-  - 1.0
-  - 0.0
+image_height: 960
+camera_name: narrow_stereo
+camera_matrix:
   rows: 3
-rectification_matrix:
   cols: 3
-  data:
-  - 1.0
-  - 0.0
-  - 0.0
-  - 0.0
-  - 1.0
-  - 0.0
-  - 0.0
-  - 0.0
-  - 1.0
+  data: [867.12044,   0.     , 626.25367,
+           0.     , 874.30741, 588.49891,
+           0.     ,   0.     ,   1.     ]
+distortion_model: plumb_bob
+distortion_coefficients:
+  rows: 1
+  cols: 5
+  data: [0.044954, -0.025231, 0.004132, -0.029724, 0.000000]
+rectification_matrix:
   rows: 3
+  cols: 3
+  data: [1., 0., 0.,
+         0., 1., 0.,
+         0., 0., 1.]
+projection_matrix:
+  rows: 3
+  cols: 4
+  data: [878.93334,   0.     , 581.21421,   0.     ,
+           0.     , 922.86259, 592.43545,   0.     ,
+           0.     ,   0.     ,   1.     ,   0.     ]

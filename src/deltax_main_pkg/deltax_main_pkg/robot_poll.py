@@ -33,7 +33,9 @@ class RobotPoll(Node):
                 )
                 x_mm = int(tf.transform.translation.x * 1000.0)
                 y_mm = int(tf.transform.translation.y * 1000.0)
-
+                if(y_mm < -200):
+                    y_mm = -200
+                    self.get_logger().warn(f'Weed {weed_id} is too far away, capping Y to -200mm to protect the camera')
                 gcode = f'G1 X{x_mm} Y{y_mm} Z-800'
                 self.get_logger().info(f'Found weed {weed_id}: {gcode}')
 

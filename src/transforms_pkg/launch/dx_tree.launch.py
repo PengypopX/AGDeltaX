@@ -36,20 +36,4 @@ def generate_launch_description():
                 'floor', 'camera'
             ]
         ),
-        # camera_frame -> charuco_board (original extrinsics)
-        Node(
-            package='tf2_ros',
-            executable='static_transform_publisher',
-            arguments=[
-                str(t['x']), str(t['y']), str(t['z']),
-                str(r['x']), str(r['y']), str(r['z']), str(r['w']),
-                'camera', 'floor'
-            ]
-        ),
-        # yolo pixel to world transform node
-        Node(
-            package='transforms_pkg',
-            executable='yolo_pixel_to_mm',
-            name='yolo_pixel_to_mm'
-        ),
     ])
