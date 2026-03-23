@@ -1,20 +1,14 @@
-camera_frame: camera_frame
+camera_frame: camera_color_optical_frame
 charuco_frame: charuco_board
 translation:
-  x: 0.058
-  y: -0.044
-  z: 0.421
+  x: -0.04914410701175838
+  y: 0.20881075977764108
+  z: 0.43613382844869486
 rotation:
-  x: 0.980
-  y: -0.029
-  z: -0.045
-  w: 0.190
-euler_degrees:
-  roll: 157.890
-  pitch: 4.444
-  yaw: -4.303
-
-
+  x: 0.9177340701414205
+  y: -0.011161779078865541
+  z: -0.0076012546253790645
+  w: 0.3969657568576629
 
 
 

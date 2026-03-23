@@ -31,7 +31,8 @@ setup(
             'yolo_pixel_to_mm = transforms_pkg.yolo_pixel_to_mm:main',
             'yolo_pixel_to_mm_v2 = transforms_pkg.yolo_pixel_to_mm_v2:main',
             'invert_yaml = transforms_pkg.invert_yaml:main',
-            'homography_generator = transforms_pkg.homography_generator:main'
+            'homography_generator = transforms_pkg.homography_generator:main',
+            'yolo_translator = transforms_pkg.yolo_translator:main'
         ],
     },
 )
