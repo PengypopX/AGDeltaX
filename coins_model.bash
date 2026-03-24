@@ -15,7 +15,7 @@ ros2 launch yolo_bringup yolo.launch.py \
   input_depth_info_topic:=/camera/camera/aligned_depth_to_color/camera_info \
   depth_info_reliability:=2 \
   target_frame:=camera_color_optical_frame \
-  use_3d:=True \
+  use_3d:=False \
   use_debug:=True \
   device:=cpu
 

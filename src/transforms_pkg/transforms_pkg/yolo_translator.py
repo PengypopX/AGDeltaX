@@ -16,7 +16,7 @@ class YoloTranslator(Node):
 
         self.subscription = self.create_subscription(
             DetectionArray,
-            '/yolo/detections_3d',
+            '/yolo/detections_3d_fast',
             self.detection_callback,
             10
         )
@@ -42,22 +42,29 @@ class YoloTranslator(Node):
             return None, None, None
 
     def detection_callback(self, msg):
-        for detection in msg.detections:
+        for i, detection in enumerate(msg.detections):
             x = detection.bbox3d.center.position.x
             y = detection.bbox3d.center.position.y
             z = detection.bbox3d.center.position.z
 
+
             if x == 0.0 and y == 0.0 and z == 0.0:
                 continue
 
+
+            object_id = detection.id if detection.id != '' else f'{detection.class_name}_{i}'
+
+
             self.get_logger().info(
-                f'ID: {detection.id} | Class: {detection.class_name} | '
+                f'ID: {object_id} | Class: {detection.class_name} | '
                 f'Score: {detection.score:.2f} | '
                 f'World: ({x:.3f}m, {y:.3f}m, {z:.3f}m)'
             )
 
-            self.publish_object_tf(detection.id, x, y, z, msg.header.stamp)
-            self.get_robot_to_object_vector(detection.id)
+
+            self.publish_object_tf(object_id, x, y, z, msg.header.stamp)
+            self.get_robot_to_object_vector(object_id)
+
 
     def publish_object_tf(self, object_id, x, y, z, stamp):
         tf_msg = TransformStamped()

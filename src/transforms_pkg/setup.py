@@ -27,9 +27,7 @@ setup(
     entry_points={
         'console_scripts': [
             'yolo_subscriber = transforms_pkg.ros_transformer:main',
-            'extrinsics_collector = transforms_pkg.extrinsics_collector:main',
-            'yolo_pixel_to_mm = transforms_pkg.yolo_pixel_to_mm:main',
-            'yolo_pixel_to_mm_v2 = transforms_pkg.yolo_pixel_to_mm_v2:main',
+            'translate_to_3d = transforms_pkg.translate_to_3d:main',
             'invert_yaml = transforms_pkg.invert_yaml:main',
             'homography_generator = transforms_pkg.homography_generator:main',
             'yolo_translator = transforms_pkg.yolo_translator:main'
