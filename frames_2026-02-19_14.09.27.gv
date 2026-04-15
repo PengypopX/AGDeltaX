@@ -1,7 +1,0 @@
-digraph G {
-"camera_frame" -> "charuco_board"[label=" Broadcaster: default_authority\nAverage rate: 7.534\nBuffer length: 5.176\nMost recent transform: 1771538965.234219\nOldest transform: 1771538960.0579\n"];
-edge [style=invis];
- subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
-"Recorded at time: 1771538967.01386"[ shape=plaintext ] ;
-}->"camera_frame";
-}

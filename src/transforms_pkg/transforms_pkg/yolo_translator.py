@@ -69,7 +69,7 @@ class YoloTranslator(Node):
     def publish_object_tf(self, object_id, x, y, z, stamp):
         tf_msg = TransformStamped()
         tf_msg.header.stamp = stamp
-        tf_msg.header.frame_id = 'camera_color_optical_frame'
+        tf_msg.header.frame_id = 'camera_link' #might need to change
         tf_msg.child_frame_id = f'object_{object_id}'
 
         tf_msg.transform.translation.x = x

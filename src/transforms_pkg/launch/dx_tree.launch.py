@@ -1,46 +1,38 @@
 import yaml
-import numpy as np
-from scipy.spatial.transform import Rotation
 from launch import LaunchDescription
 from launch_ros.actions import Node
 
 
+
+
 def generate_launch_description():
-    # Load extrinsics (camera -> charuco_board)
-    with open('/home/fresnostate/AGDeltaX/src/transforms_pkg/config/extrinsics.yaml', 'r') as f:
-        extr = yaml.safe_load(f)
-
-
-    # Load extrinsics_inv (floor -> camera_optical)
     with open('/home/fresnostate/AGDeltaX/src/transforms_pkg/config/extrinsics_inv.yaml', 'r') as f:
         extr_inv = yaml.safe_load(f)
 
 
-    t_inv = extr_inv['translation']
-    r_inv = extr_inv['rotation']
+    t = extr_inv['translation']
+    r = extr_inv['rotation']
 
 
     return LaunchDescription([
-        # robot_home -> floor (50cm ground offset)
+        # robot_base -> floor
         Node(
             package='tf2_ros',
             executable='static_transform_publisher',
-            arguments=['0', '0', '-0.5', '0', '0', '0', '1', 'robot_home', 'floor']
+            arguments=['0', '0', '-5', '0', '0', '0', '1', 'robot_home', 'floor']
         ),
-        # floor -> camera_optical (inverted extrinsics)
+        # floor -> camera_link (inverted extrinsics)
         Node(
             package='tf2_ros',
             executable='static_transform_publisher',
             arguments=[
-                str(t_inv['x']), str(t_inv['y']), str(t_inv['z']),
-                str(r_inv['x']), str(r_inv['y']), str(r_inv['z']), str(r_inv['w']),
-                'floor', 'camera_optical'
+                str(t['x']), str(t['y']), str(t['z']),
+                str(r['x']), str(r['y']), str(r['z']), str(r['w']),
+                'floor', 'camera_link'
             ]
         ),
-        Node(
-            package='tf2_ros',
-            executable='static_transform_publisher',
-            arguments=['0', '0', '0', '0', '0', '0', '1', 'camera_optical', 'camera_color_optical_frame']
-        )
     ])
+
+
+
 

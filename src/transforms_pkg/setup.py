@@ -30,7 +30,8 @@ setup(
             'translate_to_3d = transforms_pkg.translate_to_3d:main',
             'invert_yaml = transforms_pkg.invert_yaml:main',
             'homography_generator = transforms_pkg.homography_generator:main',
-            'yolo_translator = transforms_pkg.yolo_translator:main'
+            'yolo_translator = transforms_pkg.yolo_translator:main',
+            'generate_yaml = transforms_pkg.generate_yaml:main',
         ],
     },
 )
