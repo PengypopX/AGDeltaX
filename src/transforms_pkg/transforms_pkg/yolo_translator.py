@@ -5,6 +5,7 @@ from yolo_msgs.msg import DetectionArray
 import tf2_ros
 from geometry_msgs.msg import TransformStamped
 from rclpy.time import Time
+from std_msgs.msg import String
 
 class YoloTranslator(Node):
     def __init__(self):
@@ -20,7 +21,11 @@ class YoloTranslator(Node):
             self.detection_callback,
             10
         )
-        self.get_logger().info('yolo_translator is publishing 3D coordinates.')
+        
+        # New Publisher for the G-code string
+        self.gcode_pub = self.create_publisher(String, '/yolo/gcode_commands', 10)
+        
+        self.get_logger().info('yolo_translator is publishing 3D coordinates and G-code commands.')
 
     def get_robot_to_object_vector(self, object_id):
         try:
@@ -36,6 +41,12 @@ class YoloTranslator(Node):
             self.get_logger().info(
                 f'Object {object_id} -> robot_home: X={dx:.1f}mm Y={dy:.1f}mm | {gcode}'
             )
+            
+            # Publish the formatted G-code string to the event topic
+            gcode_msg = String()
+            gcode_msg.data = gcode
+            self.gcode_pub.publish(gcode_msg)
+            
             return dx, dy, gcode
         except Exception as e:
             self.get_logger().warn(f'TF lookup failed: {e}')
@@ -47,13 +58,10 @@ class YoloTranslator(Node):
             y = detection.bbox3d.center.position.y
             z = detection.bbox3d.center.position.z
 
-
             if x == 0.0 and y == 0.0 and z == 0.0:
                 continue
 
-
             object_id = detection.id if detection.id != '' else f'{detection.class_name}_{i}'
-
 
             self.get_logger().info(
                 f'ID: {object_id} | Class: {detection.class_name} | '
@@ -61,15 +69,13 @@ class YoloTranslator(Node):
                 f'World: ({x:.3f}m, {y:.3f}m, {z:.3f}m)'
             )
 
-
             self.publish_object_tf(object_id, x, y, z, msg.header.stamp)
             self.get_robot_to_object_vector(object_id)
-
 
     def publish_object_tf(self, object_id, x, y, z, stamp):
         tf_msg = TransformStamped()
         tf_msg.header.stamp = stamp
-        tf_msg.header.frame_id = 'camera_link' #might need to change
+        tf_msg.header.frame_id = 'camera_link' 
         tf_msg.child_frame_id = f'object_{object_id}'
 
         tf_msg.transform.translation.x = x
