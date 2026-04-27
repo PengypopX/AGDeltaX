@@ -24,7 +24,8 @@ setup(
     entry_points={
         'console_scripts': [
             "send_ts = deltax_main_pkg.send_ts:main",
-            "robot_poll = deltax_main_pkg.robot_poll:main"
+            "robot_poll = deltax_main_pkg.robot_poll:main",
+            "claw = deltax_main_pkg.claw:main"
         ],
     },
 )

@@ -11,9 +11,11 @@ class extract_state(Enum):
     IDLE = auto()
     APPROACH = auto()
     DESCEND = auto()
+    CLAW_CLOSE = auto()
     TWIST_AND_PULL = auto()
     YANK = auto()
     DISPOSE = auto()
+    CLAW_OPEN = auto()
     ERROR = auto()
     RESET = auto() #G28
 
@@ -30,12 +32,18 @@ class RobotPoll(Node):
             10
         )
 
-
+        # instantiate send_ts server
         self.client = self.create_client(SendString, 'raw_gcode') # service setup for send_ts
 
+        #instantiate claw server
+        self.claw_client = self.create_client(SendString, 'CLAW_INPUT')
 
         ### STATE MACHINE ###
-        self.state = extract_state.IDLE
+        self.state = extract_state.RESET
+        while not self.client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().warn('raw_gcode not available, retrying...')
+        self.state = extract_state.RESET
+        self.step_machine()
 
 
         ### PERFORMANCE VARIABLES ###
@@ -104,7 +112,9 @@ class RobotPoll(Node):
                 gcode = f'G1 Z{floor_z}' 
                 # point to CLAW_TOGGLE
 
-
+            case extract_state.CLAW_CLOSE:
+                self.call_claw_service("CLOSE")
+            
             case extract_state.TWIST_AND_PULL:
                 self.pull_count += 1
                 # Incrementally raise Z from the -950 floor
@@ -117,7 +127,6 @@ class RobotPoll(Node):
                 
                 #gcode = f'G1 Z{current_z} W{angle}'
 
-
             case extract_state.YANK:
                 gcode = f'G1 F2000 Z-550'
 
@@ -126,16 +135,23 @@ class RobotPoll(Node):
                 gcode = f'G1 X200 Y200 Z-550'
                 # point to CLAW_TOGGLE
 
+            case extract_state.CLAW_OPEN:
+                self.call_claw_service("OPEN")
 
             case extract_state.ERROR:
                 self.get_logger().error('Extraction sequence aborted, ERROR')
                 self.state = extract_state.IDLE
                 return
-
+            
+            case extract_state.RESET:
+                gcode = 'G28'
 
         if gcode:
             self.call_hardware_service(gcode)
-           
+
+    ### SEND_TS SERVICE SETUP ### 
+    # 
+    #    
     def call_hardware_service(self, gcode):
         if self.client.wait_for_service(timeout_sec=1.0):
             request = SendString.Request()
@@ -162,17 +178,18 @@ class RobotPoll(Node):
                 case extract_state.APPROACH:
                     self.state = extract_state.DESCEND
                 case extract_state.DESCEND:
-                    self.state = extract_state.TWIST_AND_PULL
+                    self.state = extract_state.CLAW_CLOSE
                 case extract_state.TWIST_AND_PULL:
                     if self.pull_count >= self.pull_max:
                         self.state = extract_state.YANK
                 case extract_state.YANK:
                     self.state = extract_state.DISPOSE
                 case extract_state.DISPOSE:
-                    self.get_logger().info('Extraction complete. Setting to IDLE')
+                    self.state = extract_state.CLAW_OPEN
+                case extract_state.RESET:
+                    self.get_logger().inf('Home confirmed. Setting to IDLE')
                     self.state = extract_state.IDLE
                     return
-            
             # Execute the next state
             self.step_machine()
                
@@ -181,6 +198,43 @@ class RobotPoll(Node):
             self.state = extract_state.ERROR
             self.step_machine()
 
+    ### CLAW SERVICE SETUP ###
+    def call_claw_service(self,cmd):
+        if self.claw_client.wait_for_service(timeout_sec=1.0):
+            request = SendString.Request()
+            request.data = cmd
+            future = self.claw_client.call_async(request)
+            future.add_done_callback(self.claw_response_callback)
+        else:
+            self.get_logger().warn("Service CLAW_INPUT not available...")
+            self.state = extract_state.ERROR
+            self.step_machine()
+
+    def claw_response_callback(self,future):
+        try:
+            response = future.result()
+            if not response.success:
+                self.get_logger().error('Claw command failed')
+                self.state = extract_state.ERROR
+                self.step_machine()
+                return
+            
+            match self.state:
+                case extract_state.CLAW_CLOSE:
+                    self.get_logger().info('Claw closing...')
+                    self.state = extract_state.TWIST_AND_PULL
+                case extract_state.CLAW_OPEN:
+                    self.get_logger().info("Claw opening...")
+                    self.state = extract_state.IDLE
+                    self.get_loger().info("Setting to Idle...")
+                    return
+                
+            self.step_machine()
+        except Exception as e:
+            self.get_logger().error(f'Claw service call failed: {e}')
+            self.state = extract_state.ERROR
+            self.step_machine()
+    
 
 def main(args=None):
     rclpy.init(args=args)

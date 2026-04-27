@@ -18,3 +18,8 @@ ros2 launch yolo_bringup yolo.launch.py \
   use_3d:=False \
   use_debug:=True \
   device:=cpu
+
+
+
+
+
