@@ -39,9 +39,10 @@ class RobotPoll(Node):
         self.claw_client = self.create_client(SendString, 'CLAW_INPUT')
 
         ### STATE MACHINE ###
+        ### HOME ON RESET ON PROGRAM LAUNCH ###
         self.state = extract_state.RESET
         while not self.client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warn('raw_gcode not available, retrying...')
+            self.get_logger().warn('raw_gcode not available, retrying...') ###wait for service to launch
         self.state = extract_state.RESET
         self.step_machine()
 
@@ -128,11 +129,11 @@ class RobotPoll(Node):
                 #gcode = f'G1 Z{current_z} W{angle}'
 
             case extract_state.YANK:
-                gcode = f'G1 F2000 Z-550'
+                gcode = f'G1 F2000 X0 Y0 Z-740'
 
 
             case extract_state.DISPOSE:
-                gcode = f'G1 X200 Y200 Z-550'
+                gcode = f'G1 F100 X-100 Y100 Z-740' #reset speed
                 # point to CLAW_TOGGLE
 
             case extract_state.CLAW_OPEN:
@@ -140,7 +141,7 @@ class RobotPoll(Node):
 
             case extract_state.ERROR:
                 self.get_logger().error('Extraction sequence aborted, ERROR')
-                self.state = extract_state.IDLE
+                self.state = extract_state.RESET
                 return
             
             case extract_state.RESET:
@@ -187,7 +188,7 @@ class RobotPoll(Node):
                 case extract_state.DISPOSE:
                     self.state = extract_state.CLAW_OPEN
                 case extract_state.RESET:
-                    self.get_logger().inf('Home confirmed. Setting to IDLE')
+                    self.get_logger().info('Home confirmed. Setting to IDLE')
                     self.state = extract_state.IDLE
                     return
             # Execute the next state
@@ -226,7 +227,7 @@ class RobotPoll(Node):
                 case extract_state.CLAW_OPEN:
                     self.get_logger().info("Claw opening...")
                     self.state = extract_state.IDLE
-                    self.get_loger().info("Setting to Idle...")
+                    self.get_logger().info("Setting to Idle...")
                     return
                 
             self.step_machine()

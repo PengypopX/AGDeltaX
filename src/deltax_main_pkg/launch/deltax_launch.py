@@ -6,17 +6,17 @@ def generate_launch_description():
     return LaunchDescription([
         # robot_base -> floor
         Node(
-            package='transforms_pkg',
+            package='deltax_main_pkg',
             executable='robot_poll',
             name='robot_poll'
         ),
         Node(
-            package='transforms_pkg',
+            package='deltax_main_pkg',
             executable='send_ts',
             name='send_ts'
         ),
         Node(
-            package='transforms_pkg',
+            package='deltax_main_pkg',
             executable='claw',
             name='claw'
         ),

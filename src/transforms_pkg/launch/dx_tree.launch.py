@@ -19,7 +19,7 @@ def generate_launch_description():
         Node(
             package='tf2_ros',
             executable='static_transform_publisher',
-            arguments=['0', '-.2', '-.5', '0', '0', '0', '1', 'robot_home', 'floor'] #hard coded offset of 20cm
+            arguments=['0', '-.15', '-.5', '0', '0', '0', '1', 'robot_home', 'floor'] #hard coded offset of 20cm
         ),
         # floor -> camera_link (inverted extrinsics)
         Node(
@@ -30,7 +30,7 @@ def generate_launch_description():
                 str(r['x']), str(r['y']), str(r['z']), str(r['w']),
                 'floor', 'camera_link'
             ]
-        ),
+        )
     ])
 
 

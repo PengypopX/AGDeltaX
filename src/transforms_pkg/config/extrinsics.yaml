@@ -1,15 +1,20 @@
-camera_frame: camera_link
+camera_frame: camera_color_optical_frame
 charuco_frame: floor
 euler_degrees:
-  pitch: -3.375591715240694
-  roll: -148.14713627012998
-  yaw: -0.806
+  pitch: -0.336
+  roll: 163.14
+  yaw: -2.585
 rotation:
-  w: 0.2740778187976555
-  x: -0.9612307029829374
-  y: -0.00132118161623893
-  z: -0.030251270472233423
+  w: 0.14642
+  x: 0.98896
+  y: -0.02275
+  z: -0.000406
 translation:
-  x: -0.096
-  y: 0.057
-  z: 0.46
+  x: -0.076
+  y: -0.027
+  z: 0.488
+
+
+
+
+
