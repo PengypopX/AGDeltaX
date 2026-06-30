@@ -1,11 +1,14 @@
 #!/bin/bash
 
-
 source /opt/ros/jazzy/setup.bash
-source ~/AGDeltaX/install/setup.bash
+source /ros2_ws/install/setup.bash
+### source ~/AGDeltaX/install/setup.bash
+### REPLACED by Dockerfile generic src ###
 
+### model:=/home/fresnostate/AGDeltaX/src/yolo_ros/final_weeds_model/my_model.pt \ (Local model path) ###
+### REPLACED by Dockerfile path ###
 ros2 launch yolo_bringup yolo.launch.py \
-  model:=/home/fresnostate/AGDeltaX/src/yolo_ros/final_weeds_model/my_model.pt \
+  model:=/ros2_ws/src/yolo_ros/yolo_coin_model_v26/my_model.pt \
   model_type:=YOLO \
   threshold:=0.5 \
   input_image_topic:=/camera/camera/color/image_raw \
